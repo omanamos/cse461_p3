@@ -7,32 +7,34 @@ import java.util.*;
 public class ISP {
     private String name;  //Name of the ISP
     private List<POP> popList;  //List of owned POPs
+    private Comparator<Route> routeMetric;
     
     //Create a new ISP
-    public ISP(String name){
+    public ISP(String name, Comparator<Route> routeMetric){
         popList = new LinkedList<POP>();
         this.name = name;
+        this.routeMetric = routeMetric;
     }
-    
+     
     //Gives this ISP a POP
     //in the city
     public void createPOP(City city){
-        POP thisPOP = new POP(city, this);
+        POP thisPOP = new POP(city, this, routeMetric);
         popList.add(thisPOP);
     }
-    
+     
     //Get the list of POP's for this ISP
     public List<POP> getPOPs(){
         List<POP> copy = new LinkedList<POP>();
         copy.addAll(popList);
         return copy;
     }
-    
+     
     //get name of the ISP
     public String getName(){
         return name;
     }
-    
+     
     //String representation is the ISP name
     //along with a list of all the POPs that ISP
     //owns
