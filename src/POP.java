@@ -10,7 +10,7 @@ public class POP {
     private ISP owner;  //the ISP owner of this POP
     private Map<POP, Route> routes; //the list of routes this POP uses to reach destinations
     private City city; //the city this POP is located in
-    private Comparator<Route> comparator;
+    private Comparator<Route> routeMetric;
     
     //create a new POP, with
     //default route to itself at cost 0.
@@ -18,7 +18,7 @@ public class POP {
         this.owner = owner;
         routes = new HashMap<POP, Route>();
         this.city = city;
-        this.comparator = comparator;
+        this.routeMetric = comparator;
         city.addPOP(this);
         Route defaultRoute = new Route(this);
         routes.put(this, defaultRoute);    
@@ -58,57 +58,56 @@ public class POP {
     //Look at the routes from this POP
     public List<Route> getRoutes(){
         List<Route> copy = new LinkedList<Route>();
-        copy.addAll(routeList);
+        copy.addAll(routes.values());
         return copy;
     }
     
     //Add a route to this POPs route table
-    public void addRoute(Route route){
-        routeList.add(route);
-    }
-        
-    //Replace an entry in the route table
-    //with a new route
-    public void replaceRoute(Route current, Route newRoute){
-        int index = routeList.indexOf(current);
-        if(index == -1 || newRoute == null){
-            System.out.println("Error! Current route was not in the POP on call to replaceRoute(), or new route was null");
-            System.exit(1);
-        } else {
-            routeList.set(index, newRoute);
-        }
-    }
-    
-    //Remove a route from this POPs route list
-    public void removeRoute(Route target){
-        routeList.remove(target);
+    private void putRoute(Route route){
+        routes.put(route.getDestination(), route);
     }
     
     //print this POP's routing table
     public void printRoutingTable(){
         System.out.println("Routing Table for " + this + ":");
-        for(Route r : routeList){
+        for(Route r : routes.values()){
             System.out.println("\t" + r);
         }
     }
     
     //Send out our path vector to all neighbors
-    public void propogate() {
+    //return true if any of my neighbors ended up updating their path vectors
+    public boolean propogate() {
+    	boolean changed = false;
     	for(POP p : this.getNeighbors()) {
-    		p.receiveUpdate(this);
+    		changed = p.receiveUpdate(this) || changed;
     	}
+    	return changed;
     }
     
     //Receive a path vector update from a neighbor
-    public void receiveUpdate(POP other) {
-    	for(Route r : other.routeList) {
-    		if(this.routeList.contains(r)) {
-    			
+    //return true if our path vector was modified
+    public boolean receiveUpdate(POP other) {
+    	boolean changed = false;
+    	
+    	for(Route r : other.getRoutes()) {
+    		Route potentialRoute = new Route(r, this, other.city.miles(this.city), EconCost.getCost(r.getDestination(), this, other));
+    		
+    		if(!this.routes.containsKey(potentialRoute.getDestination())) {
+    			putRoute(potentialRoute);
+    			changed = true;
+    		} else {
+    			Route currentRoute = this.routes.get(potentialRoute.getDestination());
+        		
+        		if(this.routeMetric.compare(potentialRoute, currentRoute) < 0) {
+        			putRoute(potentialRoute);
+        			changed = true;
+        		}
     		}
     	}
+    	
+    	return changed;
     }
-    
-    public 
     
     //Prints as the ISP name and the city of the POP
     public String toString(){
