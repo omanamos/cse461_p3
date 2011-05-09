@@ -8,9 +8,13 @@ import java.util.*;
 public class ISPsim {
 
     public static void main(String[] args){
-        //Set up the Internet!
-    	// TODO: allocate two Internets
-        Internet myInternet = new Internet(new EconCost());
+       simulate(new EconCost());
+       simulate(new ShortestPathCost());
+    }
+    
+    private static void simulate(Comparator<Route> routeMetric) {
+    	 //Set up the Internet!
+        Internet myInternet = new Internet(routeMetric);
         
         //Print out the Initial ISP structure
         System.out.println(myInternet);
@@ -29,6 +33,10 @@ public class ISPsim {
         		stop = pop.propogate() && stop;
         	}
         }
+        
+        // print final routing table
+        for(POP pop : pops){
+            pop.printRoutingTable();
+        }
     }
-
 }
