@@ -8,24 +8,27 @@ import java.util.*;
 public class ISPsim {
 
     public static void main(String[] args){
-       simulate(new EconCost());
-       simulate(new ShortestPathCost());
+       List<List<Double>> tuple1 = simulate(new EconCost());
+       List<List<Double>> tuple2 = simulate(new ShortestPathCost());
+       
+       for(int i = 0; i < tuple1.get(0).size(); i++) {
+    	   System.out.println(tuple1.get(0).get(i) + "," + tuple2.get(0).get(i));
+       }
+       
+       for(int i = 0; i < tuple1.get(1).size(); i++) {
+    	   System.err.println(tuple1.get(1).get(i) + "," + tuple2.get(1).get(i));
+       }
     }
     
-    private static void simulate(Comparator<Route> routeMetric) {
-    	 //Set up the Internet!
+    // return [sorted list of $ costs, sorted list of miles cost] 
+    private static List<List<Double>> simulate(Comparator<Route> routeMetric) {
+    	List<List<Double>> tuple = new ArrayList<List<Double>>();
+    	tuple.add(new ArrayList<Double>());
+    	tuple.add(new ArrayList<Double>());
+    	
+    	//Set up the Internet!
         Internet myInternet = new Internet(routeMetric);
-        
-        //Print out the Initial ISP structure
-        System.out.println(myInternet);
-        
-        //Print out the initial routing tables
-        //(just each node aware of itself)
-        List<POP> pops = myInternet.getAllPOPs();
-        for(POP pop : pops){
-            pop.printRoutingTable();
-        }
-        
+                
         boolean stop = false;
         while(!stop){
         	stop = true;
@@ -34,9 +37,16 @@ public class ISPsim {
         	}
         }
         
+        
         // print final routing table
-        for(POP pop : pops){
-            pop.printRoutingTable();
+        for(POP pop : myInternet.getAllPOPs()){
+            List<Route> routes = pop.getRoutes();
+            for(Route r : routes){
+            	tuple.get(0).add(r.getCost());
+            	tuple.get(1).add(r.getMiles());
+            }
         }
+        
+        return tuple;
     }
 }
