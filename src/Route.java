@@ -40,6 +40,10 @@ public class Route {
         this.costMiles += miles;
     }
     
+    public POP getFirst(){
+    	return this.route.get(0);
+    }
+    
     //get the cost of this route in Miles
     public double getMiles(){
         return costMiles;

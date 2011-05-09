@@ -18,6 +18,10 @@ public class City {
         pops = new LinkedList<POP>();
     }
     
+    public String getName(){
+    	return this.name;
+    }
+    
     //Calculate distance in miles between two cities
     public double miles(City other){
         //convert to radians

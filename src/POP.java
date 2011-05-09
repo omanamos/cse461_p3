@@ -91,7 +91,7 @@ public class POP {
     	boolean changed = false;
     	
     	for(Route r : other.getRoutes()) {
-    		Route potentialRoute = new Route(r, this, other.city.miles(this.city), EconCost.getCost(r.getDestination(), this, other));
+    		Route potentialRoute = new Route(r, this, other.city.miles(this.city), EconCost.getCost(r.getDestination(), other, this));
     		
     		if(!this.routes.containsKey(potentialRoute.getDestination())) {
     			putRoute(potentialRoute);
