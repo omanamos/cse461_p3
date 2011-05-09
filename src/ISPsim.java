@@ -3,7 +3,6 @@
 //Internet based on file input, then provides
 //framework for various route discovery protocols.
 
-import java.io.*;
 import java.util.*;
 
 public class ISPsim {
@@ -22,14 +21,14 @@ public class ISPsim {
         for(POP pop : pops){
             pop.printRoutingTable();
         }
-                
-        /*
-            Insert code here for route generation.
-            Your algorithm should be such that the routes
-            in each POP eventually stabilize and converge.
         
-        */
-            
+        boolean stop = false;
+        while(!stop){
+        	stop = true;
+        	for(POP pop : myInternet.getAllPOPs()){
+        		stop = pop.propogate() && stop;
+        	}
+        }
     }
 
 }

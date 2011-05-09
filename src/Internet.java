@@ -7,7 +7,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Internet {
+public class Internet implements Iterable<ISP>{
     private List<ISP> ispList; //list of ISP's in this Internet
 	private Comparator<Route> routeMetric;
     private static double maxDistance; //max distance between two cities
@@ -127,5 +127,10 @@ public class Internet {
         
         return isps;    
     }
+
+	@Override
+	public Iterator<ISP> iterator() {
+		return this.ispList.iterator();
+	}
 }
 

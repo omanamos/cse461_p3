@@ -4,7 +4,7 @@
 
 import java.util.*;
 
-public class ISP {
+public class ISP implements Iterable<POP>{
     private String name;  //Name of the ISP
     private List<POP> popList;  //List of owned POPs
     private Comparator<Route> routeMetric;
@@ -55,5 +55,10 @@ public class ISP {
             return this.getName().equals(((ISP)o).getName());
         } else
             return false;
-    }    
+    }
+
+	@Override
+	public Iterator<POP> iterator() {
+		return this.popList.iterator();
+	}    
 }
