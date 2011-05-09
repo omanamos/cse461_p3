@@ -113,4 +113,16 @@ public class POP {
 		
 		return neighbors;	
 	}
+	
+	public void update(POP from){
+		for(Route givenRoute : from.getRoutes()){
+			Route potentialRoute = new Route(givenRoute, this, from.city.miles(this.city), EconCost.getCost(this, from));
+			int i = this.routeList.indexOf(givenRoute);
+			if(i == -1){
+				this.routeList.add(givenRoute);
+			}else if(true){
+				
+			}
+		}
+	}
 }
