@@ -10,7 +10,8 @@ public class ISPsim {
 
     public static void main(String[] args){
         //Set up the Internet!
-        Internet myInternet = new Internet();
+    	// TODO: allocate two Internets
+        Internet myInternet = new Internet(new EconCost());
         
         //Print out the Initial ISP structure
         System.out.println(myInternet);

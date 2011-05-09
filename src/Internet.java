@@ -9,9 +9,12 @@ import java.io.*;
 
 public class Internet {
     private List<ISP> ispList; //list of ISP's in this Internet
+	private Comparator<Route> routeMetric;
     private static double maxDistance; //max distance between two cities
     
-    public Internet() {
+    public Internet(Comparator<Route> routeMetric) {
+    	this.routeMetric = routeMetric;
+    	
         ispList = new LinkedList<ISP>();
         
         //Get the cities involved in this Internet
@@ -105,7 +108,7 @@ public class Internet {
             Scanner input = new Scanner(new File(filename));
             while(input.hasNextLine()){
                 String isp = input.nextLine();
-                ISP next = new ISP(isp);
+                ISP next = new ISP(isp, routeMetric);
                 while(input.hasNextLine()){
                     String city = input.nextLine();
                     if(!city.equals("#")){

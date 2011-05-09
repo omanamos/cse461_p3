@@ -8,18 +8,20 @@ import java.util.*;
 
 public class POP {
     private ISP owner;  //the ISP owner of this POP
-    private List<Route> routeList; //the list of routes this POP uses to reach destinations
+    private Map<POP, Route> routes; //the list of routes this POP uses to reach destinations
     private City city; //the city this POP is located in
+    private Comparator<Route> comparator;
     
     //create a new POP, with
     //default route to itself at cost 0.
-    public POP(City city, ISP owner) {
+    public POP(City city, ISP owner, Comparator<Route> comparator) {
         this.owner = owner;
-        routeList = new LinkedList<Route>();
+        routes = new HashMap<POP, Route>();
         this.city = city;
+        this.comparator = comparator;
         city.addPOP(this);
         Route defaultRoute = new Route(this);
-        routeList.add(defaultRoute);    
+        routes.put(this, defaultRoute);    
     }
     
     //Get a list of all my neighbors,
@@ -89,6 +91,24 @@ public class POP {
             System.out.println("\t" + r);
         }
     }
+    
+    //Send out our path vector to all neighbors
+    public void propogate() {
+    	for(POP p : this.getNeighbors()) {
+    		p.receiveUpdate(this);
+    	}
+    }
+    
+    //Receive a path vector update from a neighbor
+    public void receiveUpdate(POP other) {
+    	for(Route r : other.routeList) {
+    		if(this.routeList.contains(r)) {
+    			
+    		}
+    	}
+    }
+    
+    public 
     
     //Prints as the ISP name and the city of the POP
     public String toString(){
