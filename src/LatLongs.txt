@@ -1,0 +1,60 @@
+New York, NY
+40.71455
+-74.007124
+Seattle, WA
+47.60356
+-122.329439
+Salt Lake City, UT
+40.759505
+-111.888229
+Anchorage, AK
+61.21756
+-149.857749
+Orlando, FL
+28.538235
+-81.377389
+Atlanta, GA
+33.748315
+-84.391109
+Cincinnati, OH
+39.106441
+-84.504694
+Kansas City, KA
+33.607595
+-91.205814
+San Diego, CA
+32.715685
+-117.161724
+Houston, TX
+29.76045
+-95.3699784
+Sao Paulo, Brazil
+-23.56287
+-46.654659
+Vancouver, Canada
+49.26044
+-123.114034
+Hong Kong, China
+22.411249
+114.153542
+Sydney, Australia
+-33.869629
+151.206955
+Tokyo, Japan
+35.670479
+139.740921
+Johannesburg, South Africa
+-26.204944
+28.040035
+London, England
+51.506325
+-0.127144
+Mumbai, India
+19.076191
+72.875877
+Rome, Italy
+41.90311
+12.49576
+Paris, France
+48.856925
+2.34121

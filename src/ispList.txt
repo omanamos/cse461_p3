@@ -1,0 +1,47 @@
+Comcast
+New York, NY
+Cincinnati, OH
+Kansas City, KA
+Orlando, FL
+Atlanta, GA
+San Diego, CA
+Houston, TX
+Sao Paulo, Brazil
+Vancouver, Canada
+Seattle, WA
+Salt Lake City, UT
+#
+Sprint
+Sao Paulo, Brazil
+Houston, TX
+Orlando, FL
+Rome, Italy
+Paris, France
+#
+PacifiCircle
+Anchorage, AK
+Vancouver, Canada
+Seattle, WA
+San Diego, CA
+Tokyo, Japan
+Hong Kong, China
+Sydney, Australia
+Johannesburg, South Africa
+Mumbai, India
+#
+AtlanticLink
+New York, NY
+Orlando, FL
+London, England
+Paris, France
+#
+SouthAtlantic
+Sao Paulo, Brazil
+Rome, Italy
+Johannesburg, South Africa
+#
+NorthBridge
+London, England
+Mumbai, India
+Tokyo, Japan
+Hong Kong, China

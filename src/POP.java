@@ -127,7 +127,7 @@ public class POP {
         for(POP pop : all){
             if(!pop.equals(this)){
                 neighbors.add(pop);
-            }    
+            }  
         }
         
         return neighbors;    

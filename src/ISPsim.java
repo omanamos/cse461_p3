@@ -4,20 +4,31 @@
 //framework for various route discovery protocols.
 
 import java.util.*;
+import java.io.*;
+
 
 public class ISPsim {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
+       // III HHHHAAAATTTTEEEE JJJJAAAVVVVAAA !!!!
        List<List<Double>> tuple1 = simulate(new EconCost());
        List<List<Double>> tuple2 = simulate(new ShortestPathCost());
-       
+
+       BufferedWriter costOutput = new BufferedWriter(new FileWriter(new File("EconCost.dat")));
+       BufferedWriter milesOutput = new BufferedWriter(new FileWriter(new File("MilesCost.dat")));
+
        for(int i = 0; i < tuple1.get(0).size(); i++) {
-    	   System.out.println(tuple1.get(0).get(i) + "," + tuple2.get(0).get(i));
+    	   costOutput.write(tuple1.get(0).get(i) + "," + tuple2.get(0).get(i));
+           costOutput.newLine();
        }
        
        for(int i = 0; i < tuple1.get(1).size(); i++) {
-    	   System.err.println(tuple1.get(1).get(i) + "," + tuple2.get(1).get(i));
+    	   milesOutput.write(tuple1.get(1).get(i) + "," + tuple2.get(1).get(i));
+           milesOutput.newLine();
        }
+
+       costOutput.close();
+       milesOutput.close();
     }
     
     // return [sorted list of $ costs, sorted list of miles cost] 
@@ -29,14 +40,23 @@ public class ISPsim {
     	//Set up the Internet!
         Internet myInternet = new Internet(routeMetric);
                 
-        boolean stop = false;
-        while(!stop){
-        	stop = true;
+        int iterations = 0;
+
+        for(;;) { 
+            iterations++;
+        	boolean someoneChanged = false;
+
         	for(POP pop : myInternet.getAllPOPs()){
-        		stop = pop.propogate() && stop;
+                boolean changed = pop.propogate();
+                if(changed)
+                    someoneChanged = true;
         	}
+
+            if(!someoneChanged)
+                break;
         }
-        
+
+        System.err.println("iterations!: " + iterations);
         
         // print final routing table
         for(POP pop : myInternet.getAllPOPs()){
