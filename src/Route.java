@@ -49,9 +49,43 @@ public class Route {
         return costMiles;
     }
     
-    //get the cost of this route in $
+    //get the cost of this route in $ (relative to the source ISP)
     public double getCost(){
-        return cost;
+       double cost = 0.0;
+       ISP us = this.route.get(0).getOwner(); // invariant: source is the first hop (hypothetical routes are constructed before they are compared)
+       POP previousNode = null;
+       
+       // a route may traverse our ISP in several points if we pass off to a transit provider, and they eventually pass it back to us (multiple times).
+       // thus, we iterate over the entire path.
+       for(POP curNode : this.route){
+    	   if(previousNode == null){
+    		   //Initial condition for setting up the loop
+    	   }else if(previousNode.getOwner().equals(us)){ // previous node was owned by us
+			   if(curNode.getOwner().equals(us)){ // traveling within the same ISP (normalized distance cost)
+				   cost += previousNode.getCity().norm(curNode.getCity());
+			   }else if(!curNode.getOwner().equals(this.destination.getOwner())){ // traveling from one ISP to intermediary ISP
+				   cost += 0.5;
+			   } //else traveling from one ISP to the destination's ISP
+    	   }else if(curNode.getOwner().equals(us) && !this.destination.getOwner().equals(us)){ //we are being treated as an intermediary ISP
+    		   cost -= 0.5;
+    	   } // else, we're not involved, so there's no cost to us
+    	   previousNode = curNode;
+       }
+       
+       return cost;
+    }
+    
+    public double getProfit() {
+    	double revenue = 1.0; // the customer always pays us $1
+    	if(this.destination.getOwner().equals(this.route.get(0).getOwner())) { // the destination customer is also paying us
+    		revenue += 1.0;
+    	}
+
+    	return revenue - this.getCost();
+    }
+    
+    public double getTotalCost(){
+    	 return cost;
     }
     
     //get the destination of this route
