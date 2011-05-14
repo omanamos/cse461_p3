@@ -12,6 +12,7 @@ public class ISPsim {
     public static void main(String[] args) throws IOException {
        // III HHHHAAAATTTTEEEE JJJJAAAVVVVAAA !!!!
        List<List<Double>> tuple1 = simulate(new EconCost());
+       System.out.println("------------");
        List<List<Double>> tuple2 = simulate(new ShortestPathCost());
 
        BufferedWriter costOutput = new BufferedWriter(new FileWriter(new File("EconCost.dat")));
@@ -62,8 +63,9 @@ public class ISPsim {
         for(POP pop : myInternet.getAllPOPs()){
             List<Route> routes = pop.getRoutes();
             for(Route r : routes){
-            	tuple.get(0).add(r.getCost());
+            	tuple.get(0).add(r.getProfit());
             	tuple.get(1).add(r.getMiles());
+            	System.out.println(r);
             }
         }
         
