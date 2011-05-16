@@ -6,19 +6,33 @@
 import java.util.*;
 import java.io.*;
 
-
 public class ISPsim {
 
     public static void main(String[] args) throws IOException {
-       // III HHHHAAAATTTTEEEE JJJJAAAVVVVAAA !!!!
-       List<List<Double>> tuple1 = simulate(new EconCost());
+       Map<Route, Route> econResults = simulate(new EconCost());
        System.out.println("------------");
-       List<List<Double>> tuple2 = simulate(new ShortestPathCost());
+       Map<Route, Route> shortestPathResults = simulate(new ShortestPathCost());
 
        BufferedWriter costOutput = new BufferedWriter(new FileWriter(new File("EconCost.dat")));
        BufferedWriter milesOutput = new BufferedWriter(new FileWriter(new File("MilesCost.dat")));
 
-       for(int i = 0; i < tuple1.get(0).size(); i++) {
+       for(Route r : econResults.keySet()){
+    	   Route econ = econResults.get(r);
+    	   Route shortestPath = shortestPathResults.get(r);
+    	   
+    	   if(econ.getCost() > shortestPath.getCost())
+    		   econ.getCost();
+    	   
+    	   costOutput.write(econ.getCost() + "," + shortestPath.getCost());
+    	   costOutput.newLine();
+    	   costOutput.flush();
+    	   
+    	   milesOutput.write(econ.getMiles() + "," + shortestPath.getMiles());
+    	   milesOutput.newLine();
+    	   milesOutput.flush();
+       }
+       
+       /*for(int i = 0; i < tuple1.get(0).size(); i++) {
     	   costOutput.write(tuple1.get(0).get(i) + "," + tuple2.get(0).get(i));
            costOutput.newLine();
        }
@@ -26,24 +40,22 @@ public class ISPsim {
        for(int i = 0; i < tuple1.get(1).size(); i++) {
     	   milesOutput.write(tuple1.get(1).get(i) + "," + tuple2.get(1).get(i));
            milesOutput.newLine();
-       }
+       }*/
 
        costOutput.close();
        milesOutput.close();
     }
     
     // return [sorted list of $ costs, sorted list of miles cost] 
-    private static List<List<Double>> simulate(Comparator<Route> routeMetric) {
-    	List<List<Double>> tuple = new ArrayList<List<Double>>();
-    	tuple.add(new ArrayList<Double>());
-    	tuple.add(new ArrayList<Double>());
+    private static Map<Route, Route> simulate(Comparator<Route> routeMetric) {
+    	Map<Route, Route> rtn = new HashMap<Route, Route>();
     	
     	//Set up the Internet!
         Internet myInternet = new Internet(routeMetric);
                 
         int iterations = 0;
-
-        for(;;) { 
+        
+        for(int i = 0; i < 100; i++) { 
             iterations++;
         	boolean someoneChanged = false;
 
@@ -63,12 +75,11 @@ public class ISPsim {
         for(POP pop : myInternet.getAllPOPs()){
             List<Route> routes = pop.getRoutes();
             for(Route r : routes){
-            	tuple.get(0).add(r.getProfit());
-            	tuple.get(1).add(r.getMiles());
+            	rtn.put(r, r);
             	System.out.println(r);
             }
         }
         
-        return tuple;
+        return rtn;
     }
 }

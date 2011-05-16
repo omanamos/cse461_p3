@@ -93,7 +93,8 @@ public class POP {
     	for(Route r : other.getRoutes()) {
     		Route potentialRoute = new Route(r, this, EconCost.getCost(r.getDestination(), other, this), other.city.miles(this.city));
     		
-    		if(!this.routes.containsKey(potentialRoute.getDestination())) {
+    		if(!this.routes.containsKey(potentialRoute.getDestination()) || 
+    				r.getSource().equals(this.routes.get(potentialRoute.getDestination()).getSecond())) {
     			putRoute(potentialRoute);
     			changed = true;
     		} else {
@@ -118,7 +119,11 @@ public class POP {
     //same if they have the same toString (same
     //city and ISP).
     public boolean equals(Object o){
-        return this.toString().equals(o.toString());
+        return o == null ? false : this.toString().equals(o.toString());
+    }
+    
+    public int hashCode(){
+    	return this.toString().hashCode();
     }
     
     //remove myself from a list of POPs

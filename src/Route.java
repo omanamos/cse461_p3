@@ -26,11 +26,12 @@ public class Route {
     //appending a new start POP to the beginning of the route
     public Route(Route other, POP start, double additionalCost, double additionalMiles){
         this.destination = other.destination;
-        cost = other.cost + additionalCost;
-        costMiles = other.costMiles + additionalMiles;
         route = new LinkedList<POP>();
         route.add(start);
         route.addAll(other.route);
+        
+        cost = other.cost + additionalCost;
+        costMiles = other.costMiles + additionalMiles;
     }
     
     //Add a hop to this route
@@ -38,10 +39,6 @@ public class Route {
         route.add(next);
         this.cost += cost;
         this.costMiles += miles;
-    }
-    
-    public POP getFirst(){
-    	return this.route.get(0);
     }
     
     //get the cost of this route in Miles
@@ -52,7 +49,7 @@ public class Route {
     //get the cost of this route in $ (relative to the source ISP)
     public double getCost(){
        double cost = 0.0;
-       ISP us = this.route.get(0).getOwner(); // invariant: source is the first hop (hypothetical routes are constructed before they are compared)
+       ISP us = this.getSource().getOwner(); // invariant: source is the first hop (hypothetical routes are constructed before they are compared)
        POP previousNode = null;
        
        // a route may traverse our ISP in several points if we pass off to a transit provider, and they eventually pass it back to us (multiple times).
@@ -93,6 +90,14 @@ public class Route {
         return destination;
     }
     
+    public POP getSource(){
+    	return this.route.get(0);
+    }
+    
+    public POP getSecond(){
+    	return this.route.size() > 1 ? this.route.get(1) : null;
+    }
+    
     //Look at the hops in this route
     public List<POP> getHops(){
         List<POP> copy = new LinkedList<POP>();
@@ -110,7 +115,7 @@ public class Route {
             result += " -> " + route.get(i);
         }
         
-        double costRounded = Math.round(cost * 100) / 100.0;
+        double costRounded = Math.round(this.getCost() * 100) / 100.0;
         long milesRounded = Math.round(costMiles);
         
         result += ". Cost of route: $" + costRounded + ", " + milesRounded + " miles.";
@@ -118,9 +123,18 @@ public class Route {
         return result;  
     }
     
+    
+    public int hashCode(){
+    	return this.destination.hashCode();
+    }
+    
     //Simple just so it works.  Two routes are equal if they
     //have the same toString.
     public boolean equals(Object o){
-        return this.toString().equals(o.toString());
+    	if(o instanceof Route){
+    		return this.getSource().equals(((Route)o).getSource()) && this.getDestination().equals(((Route)o).getDestination());
+    	}else
+    		return false;
+        //return this.toString().equals(o.toString());
     }
 }

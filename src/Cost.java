@@ -8,8 +8,8 @@ public class Cost implements Comparator<Route>{
 	 */
 	@Override
 	public int compare(Route r1, Route r2) {
-		POP neighbor1 = r1.getFirst();
-		POP neighbor2 = r2.getFirst();
+		POP neighbor1 = r1.getSource();
+		POP neighbor2 = r2.getSource();
 		
 		if(neighbor1.getOwner().equals(neighbor2.getOwner())){ //POPs in the same ISP, try comparing on city names
 			return neighbor1.getCity().getName().compareTo(neighbor2.getCity().getName());

@@ -1,0 +1,56 @@
+Shortest Path
+[PacifiCircle in Johannesburg, South Africa, 
+SouthAtlantic in Johannesburg, South Africa, 
+SouthAtlantic in Rome, Italy, 
+Sprint in Rome, Italy, 
+Sprint in Paris, France, 
+AtlanticLink in Paris, France, 
+AtlanticLink in London, England]
+
+
+Econ
+[PacifiCircle in Johannesburg, South Africa, 
+PacifiCircle in Mumbai, India, 
+NorthBridge in Mumbai, India, 
+NorthBridge in London, England, 
+AtlanticLink in London, England]
+
+
+SouthAtlantic in Johannesburg, South Africa -> 
+PacifiCircle in Johannesburg, South Africa -> 
+PacifiCircle in Hong Kong, China -> 
+NorthBridge in Hong Kong, China -> 
+NorthBridge in London, England -> 
+AtlanticLink in London, England -> 
+AtlanticLink in Paris, France. 
+Cost of route: $0.5, 12864 miles.
+
+
+
+SouthAtlantic in Johannesburg, South Africa -> 
+PacifiCircle in Johannesburg, South Africa -> 
+PacifiCircle in Hong Kong, China -> 
+NorthBridge in Hong Kong, China -> 
+NorthBridge in London, England. 
+Cost of route: $0.5, 12651 miles.
+
+
+
+PacifiCircle in Johannesburg, South Africa -> 
+PacifiCircle in Mumbai, India -> 
+NorthBridge in Mumbai, India -> 
+NorthBridge in Hong Kong, China. 
+Cost of route: $0.38, 7016 miles.
+
+PacifiCircle in Johannesburg, South Africa -> 
+PacifiCircle in Mumbai, India -> 
+NorthBridge in Mumbai, India -> 
+NorthBridge in London, England. 
+Cost of route: $0.38, 8818 miles.
+
+PacifiCircle in Johannesburg, South Africa -> 
+PacifiCircle in Mumbai, India -> 
+NorthBridge in Mumbai, India -> 
+NorthBridge in London, England -> 
+AtlanticLink in London, England. 
+Cost of route: $0.88, 8818 miles.
