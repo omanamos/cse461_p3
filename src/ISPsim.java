@@ -8,6 +8,8 @@ import java.io.*;
 
 public class ISPsim {
 
+	private final static String[] isps = {"Comcast", "AtlanticLink", "Sprint", "PacifiCircle", "SouthAtlantic", "NorthBridge"}; 
+	
     public static void main(String[] args) throws IOException {
        Map<Route, Route> econResults = simulate(new EconCost());
        System.out.println("------------");
@@ -16,6 +18,8 @@ public class ISPsim {
        BufferedWriter costOutput = new BufferedWriter(new FileWriter(new File("EconCost.dat")));
        BufferedWriter milesOutput = new BufferedWriter(new FileWriter(new File("MilesCost.dat")));
 
+       milesOutput.write("Comcast,AtlanticLink,Sprint,PacifiCircle,SouthAtlantic,NorthBridge\n");
+       costOutput.write("Comcast,AtlanticLink,Sprint,PacifiCircle,SouthAtlantic,NorthBridge\n");
        for(Route r : econResults.keySet()){
     	   Route econ = econResults.get(r);
     	   Route shortestPath = shortestPathResults.get(r);
@@ -23,27 +27,31 @@ public class ISPsim {
     	   if(econ.getCost() > shortestPath.getCost())
     		   econ.getCost();
     	   
-    	   costOutput.write(r.getSource().getOwner().getName() + "," + econ.getProfit() + "," + shortestPath.getProfit());
+    	   costOutput.write(toString(computeCosts(econ)));
     	   costOutput.newLine();
     	   costOutput.flush();
     	   
-    	   milesOutput.write(econ.getMiles() + "," + shortestPath.getMiles());
+    	   milesOutput.write(toString(computeCosts(shortestPath)));
     	   milesOutput.newLine();
     	   milesOutput.flush();
        }
        
-       /*for(int i = 0; i < tuple1.get(0).size(); i++) {
-    	   costOutput.write(tuple1.get(0).get(i) + "," + tuple2.get(0).get(i));
-           costOutput.newLine();
-       }
-       
-       for(int i = 0; i < tuple1.get(1).size(); i++) {
-    	   milesOutput.write(tuple1.get(1).get(i) + "," + tuple2.get(1).get(i));
-           milesOutput.newLine();
-       }*/
-
        costOutput.close();
        milesOutput.close();
+    }
+    
+    private static <E> String toString(Collection<E> c){
+    	String s = "";
+    	for(E e : c)
+    		s += e + ",";
+    	return s.substring(0, s.length() - 1);
+    }
+    
+    private static List<Double> computeCosts(Route r){
+    	List<Double> rtn = new ArrayList<Double>();
+    	for(String isp : isps)
+    		rtn.add(r.getCost(isp));
+    	return rtn;
     }
     
     // return [sorted list of $ costs, sorted list of miles cost] 

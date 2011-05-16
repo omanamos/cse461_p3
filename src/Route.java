@@ -48,28 +48,31 @@ public class Route {
     
     //get the cost of this route in $ (relative to the source ISP)
     public double getCost(){
-       double cost = 0.0;
-       ISP us = this.getSource().getOwner(); // invariant: source is the first hop (hypothetical routes are constructed before they are compared)
-       POP previousNode = null;
-       
-       // a route may traverse our ISP in several points if we pass off to a transit provider, and they eventually pass it back to us (multiple times).
-       // thus, we iterate over the entire path.
-       for(POP curNode : this.route){
-    	   if(previousNode == null){
-    		   //Initial condition for setting up the loop
-    	   }else if(previousNode.getOwner().equals(us)){ // previous node was owned by us
-			   if(curNode.getOwner().equals(us)){ // traveling within the same ISP (normalized distance cost)
-				   cost += previousNode.getCity().norm(curNode.getCity());
-			   }else if(!curNode.getOwner().equals(this.destination.getOwner())){ // traveling from one ISP to intermediary ISP
-				   cost += 0.5;
-			   } //else traveling from one ISP to the destination's ISP
-    	   }else if(curNode.getOwner().equals(us) && !this.destination.getOwner().equals(us)){ //we are being treated as an intermediary ISP
-    		   cost -= 0.5;
-    	   } // else, we're not involved, so there's no cost to us
-    	   previousNode = curNode;
-       }
-       
-       return cost;
+       return this.getCost(this.getSource().getOwner().getName()); // invariant: source is the first hop (hypothetical routes are constructed before they are compared)
+    }
+    
+    public double getCost(String isp){
+    	double cost = 0.0;
+    	POP previousNode = null;
+        
+        // a route may traverse our ISP in several points if we pass off to a transit provider, and they eventually pass it back to us (multiple times).
+        // thus, we iterate over the entire path.
+        for(POP curNode : this.route){
+     	   if(previousNode == null){
+     		   //Initial condition for setting up the loop
+     	   }else if(previousNode.getOwner().getName().equals(isp)){ // previous node was owned by us
+ 			   if(curNode.getOwner().getName().equals(isp)){ // traveling within the same ISP (normalized distance cost)
+ 				   cost += previousNode.getCity().norm(curNode.getCity());
+ 			   }else if(!curNode.getOwner().equals(this.destination.getOwner())){ // traveling from one ISP to intermediary ISP
+ 				   cost += 0.5;
+ 			   } //else traveling from one ISP to the destination's ISP
+     	   }else if(curNode.getOwner().getName().equals(isp) && !this.destination.getOwner().getName().equals(isp)){ //we are being treated as an intermediary ISP
+     		   cost -= 0.5;
+     	   } // else, we're not involved, so there's no cost to us
+     	   previousNode = curNode;
+        }
+        
+        return cost;
     }
     
     public double getProfit() {
