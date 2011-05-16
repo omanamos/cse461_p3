@@ -23,7 +23,7 @@ public class ISPsim {
     	   if(econ.getCost() > shortestPath.getCost())
     		   econ.getCost();
     	   
-    	   costOutput.write(econ.getCost() + "," + shortestPath.getCost());
+    	   costOutput.write(r.getSource().getOwner().getName() + "," + econ.getProfit() + "," + shortestPath.getProfit());
     	   costOutput.newLine();
     	   costOutput.flush();
     	   
